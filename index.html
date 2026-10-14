@@ -261,6 +261,7 @@
   .info-card .k{ color:var(--muted); display:inline-block; min-width:78px; }
   .list-status{ font-size:12px; color:var(--muted); margin:-8px 0 14px; }
   .list-status.err{ color:var(--danger); }
+  .hint{ font-size:12px; color:var(--muted); line-height:1.5; margin:-6px 0 14px; display:none; }
 </style>
 </head>
 <body>
@@ -294,6 +295,16 @@
       <div class="info-card" id="ci-info"></div>
       <div class="list-status" id="list-status"></div>
 
+      <div class="field" id="ci-pw-wrap" style="display:none">
+        <label for="ci-pw" id="ci-pw-label">Sandi</label>
+        <input id="ci-pw" type="password" autocomplete="current-password" placeholder="Masukkan sandi kamu">
+      </div>
+      <div class="field" id="ci-pw2-wrap" style="display:none">
+        <label for="ci-pw2">Ulangi sandi</label>
+        <input id="ci-pw2" type="password" autocomplete="new-password" placeholder="Ketik ulang sandi baru">
+      </div>
+      <div class="hint" id="ci-pw-hint">Ini pertama kalinya kamu absen. Buat sandi untuk akunmu dan ingat baik-baik, sandi ini dipakai setiap check-in dan check-out.</div>
+
       <div class="radar" id="ci-radar">
         <span class="radar-dot" id="ci-radar-dot"></span>
         <span id="ci-radar-text">Lokasi akan diperiksa saat kamu menekan tombol check-in.</span>
@@ -312,6 +323,10 @@
         </select>
       </div>
       <div class="info-card" id="co-info"></div>
+      <div class="field">
+        <label for="co-pw">Sandi</label>
+        <input id="co-pw" type="password" autocomplete="current-password" placeholder="Masukkan sandi kamu">
+      </div>
       <div class="field">
         <label for="co-kegiatan">Kegiatan yang sudah dilakukan hari ini</label>
         <textarea id="co-kegiatan" placeholder="Ringkas kegiatan/tugas yang dikerjakan hari ini"></textarea>
@@ -411,22 +426,70 @@
     }
   }
 
+  function getDeviceId(){
+    let id = null;
+    try { id = localStorage.getItem('absenDeviceId'); } catch(e){}
+    if(!id){
+      id = (window.crypto && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : Date.now().toString(36) + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+      try { localStorage.setItem('absenDeviceId', id); } catch(e){}
+    }
+    return id;
+  }
+
+  function updatePwUI(m){
+    const wrap = document.getElementById('ci-pw-wrap');
+    const wrap2 = document.getElementById('ci-pw2-wrap');
+    const hint = document.getElementById('ci-pw-hint');
+    const label = document.getElementById('ci-pw-label');
+    const pw = document.getElementById('ci-pw');
+    pw.value = '';
+    document.getElementById('ci-pw2').value = '';
+    if(!m){
+      wrap.style.display = 'none'; wrap2.style.display = 'none'; hint.style.display = 'none';
+      return;
+    }
+    wrap.style.display = 'block';
+    if(m.hasPassword){
+      label.textContent = 'Sandi';
+      pw.placeholder = 'Masukkan sandi kamu';
+      pw.setAttribute('autocomplete', 'current-password');
+      wrap2.style.display = 'none';
+      hint.style.display = 'none';
+    } else {
+      label.textContent = 'Buat sandi baru';
+      pw.placeholder = 'Minimal 6 karakter';
+      pw.setAttribute('autocomplete', 'new-password');
+      wrap2.style.display = 'block';
+      hint.style.display = 'block';
+    }
+  }
+
   function showInfo(prefix){
     const nim = document.getElementById(prefix + '-nama').value;
     const box = document.getElementById(prefix + '-info');
     const m = MEMBERS.find(x => x.nim === nim);
-    if(!m){ box.classList.remove('show'); return; }
+    if(!m){
+      box.classList.remove('show');
+      if(prefix === 'ci') updatePwUI(null);
+      return;
+    }
     box.innerHTML =
       '<span class="k">NIM / NIS</span>' + m.nim + '<br>' +
       '<span class="k">Asal</span>' + m.asal + '<br>' +
       '<span class="k">Divisi</span>' + m.divisi;
     box.classList.add('show');
+    if(prefix === 'ci') updatePwUI(m);
   }
 
   loadMembers();
 
   async function doCheckin(){
     const nim = document.getElementById('ci-nama').value;
+    const pw = document.getElementById('ci-pw').value;
+    const pw2 = document.getElementById('ci-pw2').value;
+    const m = MEMBERS.find(x => x.nim === nim);
     const btn = document.getElementById('ci-btn');
     const dot = document.getElementById('ci-radar-dot');
     const radarText = document.getElementById('ci-radar-text');
@@ -436,6 +499,21 @@
     if(!nim){
       showMsg('ci-msg', 'error', 'Pilih nama kamu terlebih dahulu.');
       return;
+    }
+    if(!pw){
+      showMsg('ci-msg', 'error', 'Isi sandi terlebih dahulu.');
+      return;
+    }
+    const baru = m && !m.hasPassword;
+    if(baru){
+      if(pw.length < 6){
+        showMsg('ci-msg', 'error', 'Sandi minimal 6 karakter.');
+        return;
+      }
+      if(pw !== pw2){
+        showMsg('ci-msg', 'error', 'Sandi dan ulangi sandi tidak sama.');
+        return;
+      }
     }
 
     if(API_URL.includes('GANTI_DENGAN_URL')){
@@ -455,14 +533,19 @@
       const result = await postData({
         action:'checkin',
         nim,
+        password: pw,
+        deviceId: getDeviceId(),
         lat: coords.latitude, lng: coords.longitude
       });
 
       if(result.status === 'success'){
         radarText.textContent = 'Status lokasi: ' + result.statusLokasi;
         showMsg('ci-msg', 'success', result.message);
+        if(baru){ m.hasPassword = true; }
+        updatePwUI(m);
       } else {
         dot.className = 'radar-dot fail';
+        radarText.textContent = 'Check-in belum tercatat.';
         showMsg('ci-msg', 'error', result.message);
       }
     } catch(err){
@@ -476,25 +559,30 @@
 
   async function doCheckout(){
     const nim = document.getElementById('co-nama').value;
+    const pw = document.getElementById('co-pw').value;
     const kegiatan = document.getElementById('co-kegiatan').value.trim();
     const btn = document.getElementById('co-btn');
 
     document.getElementById('co-msg').classList.remove('show');
 
-    if(!nim || !kegiatan){
-      showMsg('co-msg', 'error', 'Pilih nama kamu dan isi kegiatan yang sudah dilakukan.');
+    if(!nim || !pw || !kegiatan){
+      showMsg('co-msg', 'error', 'Pilih nama, isi sandi, dan isi kegiatan yang sudah dilakukan.');
       return;
     }
 
-    if(API_URL.includes('GANTI_DENGAN_URL')){
-      showMsg('co-msg', 'error', 'API_URL belum diisi. Tempel URL Web App Apps Script di index.html.');
+    if(API_URL.includes('https://script.google.com/macros/s/AKfycbyunktz11IxP58_IH5WmAnX96jtTWqmzhv1_60eh8gtWKTMaoFQizmUZtgpPYLJKZdQ/exec')){
+      showMsg('co-msg', 'error', 'https://script.google.com/macros/s/AKfycbyunktz11IxP58_IH5WmAnX96jtTWqmzhv1_60eh8gtWKTMaoFQizmUZtgpPYLJKZdQ/exec.');
       return;
     }
 
     btn.disabled = true;
     try{
-      const result = await postData({ action:'checkout', nim, kegiatan });
+      const result = await postData({ action:'checkout', nim, password: pw, deviceId: getDeviceId(), kegiatan });
       showMsg('co-msg', result.status === 'success' ? 'success' : 'error', result.message);
+      if(result.status === 'success'){
+        document.getElementById('co-pw').value = '';
+        document.getElementById('co-kegiatan').value = '';
+      }
     } catch(err){
       showMsg('co-msg', 'error', 'Gagal mengirim data: ' + err.message);
     } finally {
