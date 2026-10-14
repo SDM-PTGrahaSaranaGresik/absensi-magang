@@ -162,8 +162,26 @@
   }
   .menu-btn.in .menu-ico{ background:var(--in); }
   .menu-btn.out .menu-ico{ background:var(--out); }
+  .menu-btn.log{ background:var(--blue-soft); border-color:rgba(37,99,235,.22); }
+  .menu-btn.log .menu-ico{ background:var(--brand); }
   .menu-txt b{ display:block; font-family:'Poppins',sans-serif; font-size:15.5px; color:var(--navy); }
   .menu-txt span{ display:block; font-size:12.5px; color:var(--muted); margin-top:2px; }
+
+  /* ---------- LOGBOOK ---------- */
+  .log-item{
+    border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:12px; background:#fff;
+  }
+  .log-date{ font-family:'Poppins',sans-serif; font-weight:700; font-size:13.5px; color:var(--navy); margin-bottom:10px; }
+  .log-times{ display:flex; gap:8px; margin-bottom:10px; }
+  .log-chip{ flex:1; border-radius:8px; padding:8px 10px; font-size:12px; line-height:1.4; }
+  .log-chip b{ display:block; font-size:14px; font-weight:700; margin-top:2px; }
+  .log-chip.in{ background:var(--in-soft); color:#166534; }
+  .log-chip.out{ background:var(--out-soft); color:#8A5410; }
+  .log-chip.none{ background:var(--paper); color:var(--muted); }
+  .log-label{ font-size:12px; font-weight:600; color:var(--muted); margin-bottom:3px; }
+  .log-act{ font-size:13.5px; line-height:1.55; color:var(--ink); white-space:pre-wrap; word-break:break-word; }
+  .log-act.empty{ color:var(--muted); font-style:italic; }
+  .log-state{ text-align:center; font-size:13px; color:var(--muted); padding:22px 8px; }
 </style>
 </head>
 <body>
@@ -230,6 +248,13 @@
         <span class="menu-txt"><b>Check out</b><span id="mn-out-sub"></span></span>
       </button>
 
+      <button class="menu-btn log" onclick="openHistory()">
+        <span class="menu-ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="7" x2="16" y2="7"/><line x1="9" y1="11" x2="16" y2="11"/></svg>
+        </span>
+        <span class="menu-txt"><b>Logbook</b><span>Riwayat check in, check out &amp; kegiatan</span></span>
+      </button>
+
       <button class="btn-link" onclick="doLogout()">Keluar</button>
     </div>
 
@@ -260,6 +285,14 @@
 
       <button class="submit out" id="co-btn" onclick="doCheckout()">Absen Pulang</button>
       <div class="msg" id="co-msg"></div>
+      <button class="btn-link" onclick="backToMenu()">← Kembali ke menu</button>
+    </div>
+
+    <!-- HALAMAN 3C: LOGBOOK -->
+    <div class="view" id="view-history">
+      <h2 class="view-title">LOGBOOK</h2>
+      <p class="view-sub">Riwayat absen dan kegiatanmu (60 hari terakhir).</p>
+      <div id="hs-list"></div>
       <button class="btn-link" onclick="backToMenu()">← Kembali ke menu</button>
     </div>
 
@@ -590,6 +623,51 @@
     } catch(err){
       showMsg('co-msg', 'error', 'Gagal mengirim data: ' + err.message);
       btn.disabled = false;
+    }
+  }
+
+  /* ---------- HALAMAN 3C: LOGBOOK ---------- */
+
+  function formatTanggal(t){
+    const p = String(t).split('-');
+    if(p.length !== 3) return t;
+    const d = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+    return d.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  }
+
+  async function openHistory(){
+    const box = document.getElementById('hs-list');
+    box.innerHTML = '<div class="log-state">Memuat logbook…</div>';
+    showView('history');
+    try{
+      const result = await postData(Object.assign({ action:'history' }, creds()));
+      if(result.status !== 'success'){
+        box.innerHTML = '<div class="log-state">' + esc(result.message) + '</div>';
+        return;
+      }
+      const list = result.history || [];
+      if(!list.length){
+        box.innerHTML = '<div class="log-state">Belum ada riwayat absen.</div>';
+        return;
+      }
+      box.innerHTML = list.map(it => {
+        const inChip = it.checkin
+          ? '<div class="log-chip in">Check in<b>' + esc(it.checkin) + '</b></div>'
+          : '<div class="log-chip none">Check in<b>–</b></div>';
+        const outChip = it.checkout
+          ? '<div class="log-chip out">Check out<b>' + esc(it.checkout) + '</b></div>'
+          : '<div class="log-chip none">Check out<b>Belum</b></div>';
+        const act = it.kegiatan
+          ? '<div class="log-act">' + esc(it.kegiatan) + '</div>'
+          : '<div class="log-act empty">Kegiatan belum diisi (isi saat check out).</div>';
+        return '<div class="log-item">' +
+          '<div class="log-date">' + esc(formatTanggal(it.tanggal)) + '</div>' +
+          '<div class="log-times">' + inChip + outChip + '</div>' +
+          '<div class="log-label">Kegiatan</div>' + act +
+          '</div>';
+      }).join('');
+    } catch(err){
+      box.innerHTML = '<div class="log-state">Gagal memuat logbook: ' + esc(err.message) + '</div>';
     }
   }
 
