@@ -252,7 +252,7 @@
         <span class="menu-ico">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="7" x2="16" y2="7"/><line x1="9" y1="11" x2="16" y2="11"/></svg>
         </span>
-        <span class="menu-txt"><b>Logbook</b><span>Riwayat check in, check out &amp; kegiatan</span></span>
+        <span class="menu-txt"><b>History</b><span>Riwayat check in, check out &amp; kegiatan</span></span>
       </button>
 
       <button class="btn-link" onclick="doLogout()">Keluar</button>
@@ -290,7 +290,7 @@
 
     <!-- HALAMAN 3C: LOGBOOK -->
     <div class="view" id="view-history">
-      <h2 class="view-title">LOGBOOK</h2>
+      <h2 class="view-title">HISTORY</h2>
       <p class="view-sub">Riwayat absen dan kegiatanmu (60 hari terakhir).</p>
       <div id="hs-list"></div>
       <button class="btn-link" onclick="backToMenu()">← Kembali ke menu</button>
@@ -637,7 +637,7 @@
 
   async function openHistory(){
     const box = document.getElementById('hs-list');
-    box.innerHTML = '<div class="log-state">Memuat logbook…</div>';
+    box.innerHTML = '<div class="log-state">Memuat history…</div>';
     showView('history');
     try{
       const result = await postData(Object.assign({ action:'history' }, creds()));
@@ -667,7 +667,7 @@
           '</div>';
       }).join('');
     } catch(err){
-      box.innerHTML = '<div class="log-state">Gagal memuat logbook: ' + esc(err.message) + '</div>';
+      box.innerHTML = '<div class="log-state">Gagal memuat history: ' + esc(err.message) + '</div>';
     }
   }
 
