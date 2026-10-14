@@ -473,7 +473,7 @@
 
     const label = btn.textContent;
     btn.disabled = true;
-    btn.textContent = 'Memeriksa… (tunggu sebentar)';
+    btn.textContent = 'Loading…';
     try{
       const result = await postData({ action:'login', nim: m.nim, password: pw, deviceId: getDeviceId() });
       if(result.status !== 'success'){
