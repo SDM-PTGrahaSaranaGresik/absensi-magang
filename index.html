@@ -184,7 +184,7 @@
 
     <!-- HALAMAN 1: LOGIN -->
     <div class="view active" id="view-login">
-      <h2 class="view-title">Login</h2>
+      <h2 class="view-title">LOGIN</h2>
       <p class="view-sub">Pilih nama kamu lalu masukkan kata sandi.</p>
 
       <div class="field">
@@ -319,12 +319,22 @@
   }
 
   async function postData(payload){
-    const res = await fetch(API_URL, {
-      method:'POST',
-      headers: { 'Content-Type':'text/plain;charset=utf-8' }, // hindari CORS preflight ke Apps Script
-      body: JSON.stringify(payload)
-    });
-    return res.json();
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 45000);   // jangan menggantung selamanya
+    try{
+      const res = await fetch(API_URL, {
+        method:'POST',
+        headers: { 'Content-Type':'text/plain;charset=utf-8' }, // hindari CORS preflight ke Apps Script
+        body: JSON.stringify(payload),
+        signal: ctrl.signal
+      });
+      return await res.json();
+    } catch(err){
+      if(err.name === 'AbortError') throw new Error('Server terlalu lama merespons. Coba lagi sebentar.');
+      throw err;
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   function getDeviceId(){
@@ -430,7 +440,7 @@
 
     const label = btn.textContent;
     btn.disabled = true;
-    btn.textContent = 'Memeriksa…';
+    btn.textContent = 'Memeriksa… (tunggu sebentar)';
     try{
       const result = await postData({ action:'login', nim: m.nim, password: pw, deviceId: getDeviceId() });
       if(result.status !== 'success'){
