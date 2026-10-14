@@ -245,6 +245,22 @@
     padding: 0 20px;
     line-height:1.5;
   }
+
+  .info-card{
+    display:none;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:12px 14px;
+    margin-bottom:16px;
+    font-size:13px;
+    line-height:1.7;
+    color:var(--ink);
+  }
+  .info-card.show{ display:block; }
+  .info-card .k{ color:var(--muted); display:inline-block; min-width:78px; }
+  .list-status{ font-size:12px; color:var(--muted); margin:-8px 0 14px; }
+  .list-status.err{ color:var(--danger); }
 </style>
 </head>
 <body>
@@ -270,32 +286,13 @@
     <!-- CHECK-IN -->
     <div class="panel active" id="panel-checkin">
       <div class="field">
-        <label for="ci-nama">Nama lengkap</label>
-        <input id="ci-nama" type="text" placeholder="Nama sesuai identitas">
-      </div>
-      <div class="field">
-        <label for="ci-nim">NIM / NIS</label>
-        <input id="ci-nim" type="text" placeholder="Nomor induk mahasiswa/siswa">
-      </div>
-      <div class="field">
-        <label for="ci-asal">Asal sekolah / universitas</label>
-        <input id="ci-asal" type="text" placeholder="Contoh: Universitas Airlangga">
-      </div>
-      <div class="field">
-        <label for="ci-unit">Divisi</label>
-        <select id="ci-unit">
-          <option value="" disabled selected>Pilih divisi penempatan</option>
-          <option>Administrasi Keuangan</option>
-          <option>SDM & Umum</option>
-          <option>Satuan Pengawasan Internal</option>
-          <option>Properti & Perkantoran</option>
-          <option>Pergudangan</option>
-          <option>Perdagangan Jasa</option>
-          <option>Perdagangan Barang & Pemasaran</option>
-          <option>Pengadaan</option>
-          <option>PT GGW</option>
+        <label for="ci-nama">Nama</label>
+        <select id="ci-nama" onchange="showInfo('ci')">
+          <option value="" disabled selected>Memuat daftar nama…</option>
         </select>
       </div>
+      <div class="info-card" id="ci-info"></div>
+      <div class="list-status" id="list-status"></div>
 
       <div class="radar" id="ci-radar">
         <span class="radar-dot" id="ci-radar-dot"></span>
@@ -309,13 +306,12 @@
     <!-- CHECK-OUT -->
     <div class="panel" id="panel-checkout">
       <div class="field">
-        <label for="co-nama">Nama lengkap</label>
-        <input id="co-nama" type="text" placeholder="Sama seperti saat check-in">
+        <label for="co-nama">Nama</label>
+        <select id="co-nama" onchange="showInfo('co')">
+          <option value="" disabled selected>Memuat daftar nama…</option>
+        </select>
       </div>
-      <div class="field">
-        <label for="co-nim">NIM / NIS</label>
-        <input id="co-nim" type="text" placeholder="Sama seperti saat check-in">
-      </div>
+      <div class="info-card" id="co-info"></div>
       <div class="field">
         <label for="co-kegiatan">Kegiatan yang sudah dilakukan hari ini</label>
         <textarea id="co-kegiatan" placeholder="Ringkas kegiatan/tugas yang dikerjakan hari ini"></textarea>
@@ -379,23 +375,70 @@
     return res.json();
   }
 
+  let MEMBERS = [];
+
+  async function loadMembers(){
+    const status = document.getElementById('list-status');
+    const sels = [document.getElementById('ci-nama'), document.getElementById('co-nama')];
+    if(API_URL.includes('GANTI_DENGAN_URL')){
+      status.textContent = 'API_URL belum diisi.';
+      status.className = 'list-status err';
+      return;
+    }
+    try{
+      const res = await fetch(API_URL + '?action=list');
+      const data = await res.json();
+      if(data.status !== 'ok') throw new Error(data.message || 'Gagal memuat daftar nama.');
+      MEMBERS = data.members || [];
+      sels.forEach(sel => {
+        sel.innerHTML = '';
+        const ph = document.createElement('option');
+        ph.value = ''; ph.disabled = true; ph.selected = true;
+        ph.textContent = MEMBERS.length ? 'Pilih nama kamu' : 'Belum ada data anak magang';
+        sel.appendChild(ph);
+        MEMBERS.forEach(m => {
+          const o = document.createElement('option');
+          o.value = m.nim;
+          o.textContent = m.nama;
+          sel.appendChild(o);
+        });
+      });
+      status.textContent = '';
+    } catch(err){
+      sels.forEach(sel => { sel.innerHTML = '<option value="" disabled selected>Gagal memuat daftar</option>'; });
+      status.textContent = 'Gagal memuat daftar nama. Coba refresh halaman.';
+      status.className = 'list-status err';
+    }
+  }
+
+  function showInfo(prefix){
+    const nim = document.getElementById(prefix + '-nama').value;
+    const box = document.getElementById(prefix + '-info');
+    const m = MEMBERS.find(x => x.nim === nim);
+    if(!m){ box.classList.remove('show'); return; }
+    box.innerHTML =
+      '<span class="k">NIM / NIS</span>' + m.nim + '<br>' +
+      '<span class="k">Asal</span>' + m.asal + '<br>' +
+      '<span class="k">Divisi</span>' + m.divisi;
+    box.classList.add('show');
+  }
+
+  loadMembers();
+
   async function doCheckin(){
-    const nama = document.getElementById('ci-nama').value.trim();
-    const nim = document.getElementById('ci-nim').value.trim();
-    const asalInstitusi = document.getElementById('ci-asal').value.trim();
-    const unitKerja = document.getElementById('ci-unit').value.trim();
+    const nim = document.getElementById('ci-nama').value;
     const btn = document.getElementById('ci-btn');
     const dot = document.getElementById('ci-radar-dot');
     const radarText = document.getElementById('ci-radar-text');
 
     document.getElementById('ci-msg').classList.remove('show');
 
-    if(!nama || !nim || !asalInstitusi || !unitKerja){
-      showMsg('ci-msg', 'error', 'Mohon lengkapi semua data terlebih dahulu.');
+    if(!nim){
+      showMsg('ci-msg', 'error', 'Pilih nama kamu terlebih dahulu.');
       return;
     }
 
-    if(!API_URL || API_URL.includes('PASTE_URL_DISINI')){
+    if(API_URL.includes('GANTI_DENGAN_URL')){
       showMsg('ci-msg', 'error', 'API_URL belum diisi. Tempel URL Web App Apps Script di index.html.');
       return;
     }
@@ -411,7 +454,7 @@
 
       const result = await postData({
         action:'checkin',
-        nama, nim, asalInstitusi, unitKerja,
+        nim,
         lat: coords.latitude, lng: coords.longitude
       });
 
@@ -432,26 +475,25 @@
   }
 
   async function doCheckout(){
-    const nama = document.getElementById('co-nama').value.trim();
-    const nim = document.getElementById('co-nim').value.trim();
+    const nim = document.getElementById('co-nama').value;
     const kegiatan = document.getElementById('co-kegiatan').value.trim();
     const btn = document.getElementById('co-btn');
 
     document.getElementById('co-msg').classList.remove('show');
 
-    if(!nama || !nim || !kegiatan){
-      showMsg('co-msg', 'error', 'Mohon lengkapi nama, NIM/NIS, dan kegiatan yang sudah dilakukan.');
+    if(!nim || !kegiatan){
+      showMsg('co-msg', 'error', 'Pilih nama kamu dan isi kegiatan yang sudah dilakukan.');
       return;
     }
 
-    if(!API_URL || API_URL.includes('PASTE_URL_DISINI')){
+    if(API_URL.includes('GANTI_DENGAN_URL')){
       showMsg('co-msg', 'error', 'API_URL belum diisi. Tempel URL Web App Apps Script di index.html.');
       return;
     }
 
     btn.disabled = true;
     try{
-      const result = await postData({ action:'checkout', nama, nim, kegiatan });
+      const result = await postData({ action:'checkout', nim, kegiatan });
       showMsg('co-msg', result.status === 'success' ? 'success' : 'error', result.message);
     } catch(err){
       showMsg('co-msg', 'error', 'Gagal mengirim data: ' + err.message);
