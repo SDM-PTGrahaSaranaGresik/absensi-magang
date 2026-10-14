@@ -36,75 +36,31 @@
     justify-content:center;
     padding: 24px 16px 60px;
   }
-  .app{
-    width:100%;
-    max-width:440px;
-  }
+  .app{ width:100%; max-width:440px; }
 
-  .topbar{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:28px;
-  }
-  .topbar img{
-    height:34px;
-    display:block;
-  }
-  .topbar span{
-    font-family:'Poppins',sans-serif;
-    font-weight:700;
-    font-size:14px;
-    color:var(--navy);
-  }
+  .topbar{ display:flex; align-items:center; gap:10px; margin-bottom:28px; }
+  .topbar img{ height:34px; display:block; }
+  .topbar span{ font-family:'Poppins',sans-serif; font-weight:700; font-size:14px; color:var(--navy); }
 
-  .masthead{
-    text-align:center;
-    padding: 4px 4px 26px;
-  }
+  .masthead{ text-align:center; padding: 4px 4px 26px; }
   .masthead .eyebrow{
-    display:inline-block;
-    font-size:12px;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    color:var(--brand-dark);
-    background:var(--blue-soft);
-    font-weight:600;
-    padding:5px 13px;
-    border-radius:999px;
-    margin-bottom:14px;
+    display:inline-block; font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--brand-dark); background:var(--blue-soft); font-weight:600;
+    padding:5px 13px; border-radius:999px; margin-bottom:14px;
   }
   .masthead h1{
-    font-family:'Poppins',sans-serif;
-    font-size:26px;
-    font-weight:800;
-    margin:0 0 8px;
-    letter-spacing:-0.01em;
-    color:var(--navy);
-    text-transform:uppercase;
+    font-family:'Poppins',sans-serif; font-size:26px; font-weight:800; margin:0 0 8px;
+    letter-spacing:-0.01em; color:var(--navy); text-transform:uppercase;
   }
-  .masthead .sub{
-    font-size:13.5px;
-    color:var(--muted);
-  }
+  .masthead .sub{ font-size:13.5px; color:var(--muted); }
   .clock{
-    margin-top:16px;
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    background:var(--blue-soft);
-    border:1px solid rgba(37,99,235,0.14);
-    padding:8px 16px;
-    border-radius:999px;
-    font-size:13px;
-    color:var(--brand-dark);
-    font-weight:500;
+    margin-top:16px; display:inline-flex; align-items:center; gap:8px;
+    background:var(--blue-soft); border:1px solid rgba(37,99,235,0.14);
+    padding:8px 16px; border-radius:999px; font-size:13px; color:var(--brand-dark); font-weight:500;
   }
   .dot-live{
-    width:7px;height:7px;border-radius:50%;
-    background:#20A65D;
-    box-shadow:0 0 0 0 rgba(32,166,93,.6);
-    animation:pulse 2s infinite;
+    width:7px;height:7px;border-radius:50%; background:#20A65D;
+    box-shadow:0 0 0 0 rgba(32,166,93,.6); animation:pulse 2s infinite;
   }
   @keyframes pulse{
     0%{box-shadow:0 0 0 0 rgba(32,166,93,.5);}
@@ -113,93 +69,41 @@
   }
 
   .card{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
     box-shadow: 0 1px 2px rgba(15,28,61,.04), 0 16px 32px -18px rgba(15,28,61,.18);
     overflow:hidden;
   }
 
-  .tabs{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    background:var(--paper);
-    padding:6px;
-    gap:6px;
+  /* ---------- HALAMAN (view) ---------- */
+  .view{ display:none; padding:22px; }
+  .view.active{ display:block; }
+  .view-title{
+    font-family:'Poppins',sans-serif; font-weight:700; font-size:17px; color:var(--navy);
+    margin:0 0 4px;
   }
-  .tab{
-    border:none;
-    background:transparent;
-    padding:12px 8px;
-    font-family:'Poppins',sans-serif;
-    font-weight:700;
-    font-size:13.5px;
-    color:var(--muted);
-    border-radius:10px;
-    cursor:pointer;
-    transition: all .18s ease;
-  }
-  .tab.active[data-tab="checkin"]{ background:var(--in); color:#fff; }
-  .tab.active[data-tab="checkout"]{ background:var(--out); color:#fff; }
-
-  .panel{ padding:22px; display:none; }
-  .panel.active{ display:block; }
+  .view-sub{ font-size:13px; color:var(--muted); margin:0 0 20px; line-height:1.5; }
 
   .field{ margin-bottom:16px; }
-  .field label{
-    display:block;
-    font-size:12.5px;
-    font-weight:600;
-    color:var(--muted);
-    margin-bottom:6px;
-  }
+  .field label{ display:block; font-size:12.5px; font-weight:600; color:var(--muted); margin-bottom:6px; }
   .field input, .field textarea, .field select{
-    width:100%;
-    padding:12px 14px;
-    border:1.5px solid var(--line);
-    border-radius:10px;
-    font-family:'Inter',sans-serif;
-    font-size:14.5px;
-    color:var(--ink);
-    background:#fff;
+    width:100%; padding:12px 14px; border:1.5px solid var(--line); border-radius:10px;
+    font-family:'Inter',sans-serif; font-size:14.5px; color:var(--ink); background:#fff;
     transition:border-color .15s ease;
   }
   .field select{
-    appearance:none;
-    -webkit-appearance:none;
+    appearance:none; -webkit-appearance:none;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' stroke='%236B7280' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-    background-repeat:no-repeat;
-    background-position: right 14px center;
-    padding-right: 36px;
+    background-repeat:no-repeat; background-position: right 14px center; padding-right: 36px;
   }
-  .field textarea{ resize:vertical; min-height:80px; }
-  .field input:focus, .field textarea:focus, .field select:focus{
-    outline:none;
-    border-color: var(--brand);
-  }
+  .field textarea{ resize:vertical; min-height:96px; }
+  .field input:focus, .field textarea:focus, .field select:focus{ outline:none; border-color: var(--brand); }
 
   .radar{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:12px 14px;
-    border-radius:10px;
-    background:var(--paper);
-    margin-bottom:18px;
-    font-size:13px;
-    color:var(--muted);
-    min-height:20px;
+    display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:10px;
+    background:var(--paper); margin-bottom:18px; font-size:13px; color:var(--muted); min-height:20px;
   }
-  .radar-dot{
-    width:10px;height:10px;border-radius:50%;
-    background:#CBD3E1;
-    flex-shrink:0;
-    transition: background .2s ease;
-  }
-  .radar-dot.seeking{
-    background: var(--brand);
-    animation:pulse-blue 1.2s infinite;
-  }
+  .radar-dot{ width:10px;height:10px;border-radius:50%; background:#CBD3E1; flex-shrink:0; transition: background .2s ease; }
+  .radar-dot.seeking{ background: var(--brand); animation:pulse-blue 1.2s infinite; }
   .radar-dot.ok{ background:var(--in); }
   .radar-dot.fail{ background:var(--danger); }
   @keyframes pulse-blue{
@@ -209,59 +113,57 @@
   }
 
   button.submit{
-    width:100%;
-    border:none;
-    padding:14px;
-    border-radius:10px;
-    font-family:'Poppins',sans-serif;
-    font-weight:700;
-    font-size:15px;
-    color:#fff;
-    cursor:pointer;
+    width:100%; border:none; padding:14px; border-radius:10px;
+    font-family:'Poppins',sans-serif; font-weight:700; font-size:15px; color:#fff; cursor:pointer;
     transition: transform .12s ease, opacity .12s ease;
   }
   button.submit:active{ transform: scale(0.98); }
   button.submit:disabled{ opacity:.55; cursor:not-allowed; }
-  #panel-checkin button.submit{ background: var(--in); }
-  #panel-checkout button.submit{ background: var(--out); }
+  button.submit.brand{ background: var(--brand); }
+  button.submit.in{ background: var(--in); }
+  button.submit.out{ background: var(--out); }
 
-  .msg{
-    margin-top:14px;
-    padding:12px 14px;
-    border-radius:10px;
-    font-size:13.5px;
-    line-height:1.45;
-    display:none;
+  .btn-link{
+    display:block; width:100%; margin-top:12px; padding:10px; border:none; background:transparent;
+    font-family:'Inter',sans-serif; font-size:13.5px; font-weight:600; color:var(--muted); cursor:pointer;
   }
+  .btn-link:hover{ color:var(--ink); }
+
+  .msg{ margin-top:14px; padding:12px 14px; border-radius:10px; font-size:13.5px; line-height:1.45; display:none; }
   .msg.show{ display:block; }
   .msg.success{ background:var(--in-soft); color:#166534; }
   .msg.error{ background:var(--danger-soft); color:#9B2C2C; }
 
-  .footnote{
-    text-align:center;
-    font-size:11.5px;
-    color:#9AA3B5;
-    margin-top:18px;
-    padding: 0 20px;
-    line-height:1.5;
-  }
+  .footnote{ text-align:center; font-size:11.5px; color:#9AA3B5; margin-top:18px; padding: 0 20px; line-height:1.5; }
 
   .info-card{
-    display:none;
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:12px 14px;
-    margin-bottom:16px;
-    font-size:13px;
-    line-height:1.7;
-    color:var(--ink);
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; margin-bottom:16px; font-size:13px; line-height:1.7; color:var(--ink);
   }
-  .info-card.show{ display:block; }
   .info-card .k{ color:var(--muted); display:inline-block; min-width:78px; }
   .list-status{ font-size:12px; color:var(--muted); margin:-8px 0 14px; }
   .list-status.err{ color:var(--danger); }
   .hint{ font-size:12px; color:var(--muted); line-height:1.5; margin:-6px 0 14px; display:none; }
+
+  /* ---------- MENU ---------- */
+  .menu-btn{
+    display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+    padding:16px; margin-bottom:12px; border-radius:14px; border:1.5px solid transparent;
+    cursor:pointer; font-family:'Inter',sans-serif; transition: transform .12s ease, opacity .12s ease;
+  }
+  .menu-btn:active{ transform: scale(0.98); }
+  .menu-btn:disabled{ opacity:.5; cursor:not-allowed; }
+  .menu-btn:disabled:active{ transform:none; }
+  .menu-btn.in{ background:var(--in-soft); border-color:rgba(31,157,85,.25); }
+  .menu-btn.out{ background:var(--out-soft); border-color:rgba(201,121,26,.25); }
+  .menu-ico{
+    width:44px; height:44px; border-radius:12px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; color:#fff;
+  }
+  .menu-btn.in .menu-ico{ background:var(--in); }
+  .menu-btn.out .menu-ico{ background:var(--out); }
+  .menu-txt b{ display:block; font-family:'Poppins',sans-serif; font-size:15.5px; color:var(--navy); }
+  .menu-txt span{ display:block; font-size:12.5px; color:var(--muted); margin-top:2px; }
 </style>
 </head>
 <body>
@@ -279,62 +181,88 @@
   </div>
 
   <div class="card">
-    <div class="tabs">
-      <button class="tab active" data-tab="checkin" onclick="switchTab('checkin')">Check-in</button>
-      <button class="tab" data-tab="checkout" onclick="switchTab('checkout')">Check-out</button>
-    </div>
 
-    <!-- CHECK-IN -->
-    <div class="panel active" id="panel-checkin">
+    <!-- HALAMAN 1: LOGIN -->
+    <div class="view active" id="view-login">
+      <h2 class="view-title">Login</h2>
+      <p class="view-sub">Pilih nama kamu lalu masukkan kata sandi.</p>
+
       <div class="field">
-        <label for="ci-nama">Nama</label>
-        <select id="ci-nama" onchange="showInfo('ci')">
+        <label for="lg-nama">Nama</label>
+        <select id="lg-nama" onchange="onNamaChange()">
           <option value="" disabled selected>Memuat daftar nama…</option>
         </select>
       </div>
-      <div class="info-card" id="ci-info"></div>
       <div class="list-status" id="list-status"></div>
 
-      <div class="field" id="ci-pw-wrap" style="display:none">
-        <label for="ci-pw" id="ci-pw-label">Sandi</label>
-        <input id="ci-pw" type="password" autocomplete="current-password" placeholder="Masukkan sandi kamu">
+      <div class="field" id="lg-pw-wrap" style="display:none">
+        <label for="lg-pw" id="lg-pw-label">Kata sandi</label>
+        <input id="lg-pw" type="password" autocomplete="current-password" placeholder="Masukkan kata sandi kamu">
       </div>
-      <div class="field" id="ci-pw2-wrap" style="display:none">
-        <label for="ci-pw2">Ulangi sandi</label>
-        <input id="ci-pw2" type="password" autocomplete="new-password" placeholder="Ketik ulang sandi baru">
+      <div class="field" id="lg-pw2-wrap" style="display:none">
+        <label for="lg-pw2">Ulangi kata sandi</label>
+        <input id="lg-pw2" type="password" autocomplete="new-password" placeholder="Ketik ulang kata sandi baru">
       </div>
-      <div class="hint" id="ci-pw-hint">Ini pertama kalinya kamu absen. Buat sandi untuk akunmu dan ingat baik-baik, sandi ini dipakai setiap check-in dan check-out.</div>
+      <div class="hint" id="lg-pw-hint">Ini pertama kalinya kamu login. Buat kata sandi untuk akunmu dan ingat baik-baik, kata sandi ini dipakai setiap kali login.</div>
 
-      <div class="radar" id="ci-radar">
-        <span class="radar-dot" id="ci-radar-dot"></span>
-        <span id="ci-radar-text">Lokasi akan diperiksa saat kamu menekan tombol check-in.</span>
-      </div>
-
-      <button class="submit" id="ci-btn" onclick="doCheckin()">Absen Masuk</button>
-      <div class="msg" id="ci-msg"></div>
+      <button class="submit brand" id="lg-btn" onclick="doLogin()">Masuk</button>
+      <div class="msg" id="lg-msg"></div>
     </div>
 
-    <!-- CHECK-OUT -->
-    <div class="panel" id="panel-checkout">
-      <div class="field">
-        <label for="co-nama">Nama</label>
-        <select id="co-nama" onchange="showInfo('co')">
-          <option value="" disabled selected>Memuat daftar nama…</option>
-        </select>
+    <!-- HALAMAN 2: MENU -->
+    <div class="view" id="view-menu">
+      <h2 class="view-title" id="mn-hello">Halo!</h2>
+      <p class="view-sub">Pilih yang mau kamu lakukan sekarang.</p>
+
+      <div class="info-card" id="mn-info"></div>
+
+      <button class="menu-btn in" id="mn-in" onclick="openCheckin()">
+        <span class="menu-ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        </span>
+        <span class="menu-txt"><b>Check in</b><span id="mn-in-sub"></span></span>
+      </button>
+
+      <button class="menu-btn out" id="mn-out" onclick="openCheckout()">
+        <span class="menu-ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </span>
+        <span class="menu-txt"><b>Check out</b><span id="mn-out-sub"></span></span>
+      </button>
+
+      <button class="btn-link" onclick="doLogout()">Keluar</button>
+    </div>
+
+    <!-- HALAMAN 3A: CHECK IN -->
+    <div class="view" id="view-checkin">
+      <h2 class="view-title">Check in</h2>
+      <p class="view-sub">Pastikan GPS aktif dan kamu berada di area kantor.</p>
+
+      <div class="radar">
+        <span class="radar-dot" id="ci-radar-dot"></span>
+        <span id="ci-radar-text">Lokasi akan diperiksa saat kamu menekan tombol di bawah.</span>
       </div>
-      <div class="info-card" id="co-info"></div>
-      <div class="field">
-        <label for="co-pw">Sandi</label>
-        <input id="co-pw" type="password" autocomplete="current-password" placeholder="Masukkan sandi kamu">
-      </div>
+
+      <button class="submit in" id="ci-btn" onclick="doCheckin()">Absen Masuk</button>
+      <div class="msg" id="ci-msg"></div>
+      <button class="btn-link" onclick="backToMenu()">← Kembali ke menu</button>
+    </div>
+
+    <!-- HALAMAN 3B: CHECK OUT -->
+    <div class="view" id="view-checkout">
+      <h2 class="view-title">Check out</h2>
+      <p class="view-sub">Tulis kegiatan yang sudah kamu kerjakan hari ini.</p>
+
       <div class="field">
         <label for="co-kegiatan">Kegiatan yang sudah dilakukan hari ini</label>
         <textarea id="co-kegiatan" placeholder="Ringkas kegiatan/tugas yang dikerjakan hari ini"></textarea>
       </div>
 
-      <button class="submit" id="co-btn" onclick="doCheckout()">Absen Pulang</button>
+      <button class="submit out" id="co-btn" onclick="doCheckout()">Absen Pulang</button>
       <div class="msg" id="co-msg"></div>
+      <button class="btn-link" onclick="backToMenu()">← Kembali ke menu</button>
     </div>
+
   </div>
 
   <div class="footnote">
@@ -344,13 +272,17 @@
 </div>
 
 <script>
-  // TODO: ganti dengan URL Web App hasil deploy Google Apps Script (Code.gs)
   const API_URL = 'https://script.google.com/macros/s/AKfycbyunktz11IxP58_IH5WmAnX96jtTWqmzhv1_60eh8gtWKTMaoFQizmUZtgpPYLJKZdQ/exec';
 
-  function switchTab(tab){
-    document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-    document.getElementById('panel-checkin').classList.toggle('active', tab === 'checkin');
-    document.getElementById('panel-checkout').classList.toggle('active', tab === 'checkout');
+  // Data login disimpan di memori saja (hilang kalau halaman di-refresh atau menekan Keluar)
+  const session = { nim:'', password:'', member:null, today:{ checkin:'', checkout:'' } };
+  let MEMBERS = [];
+
+  /* ---------- UMUM ---------- */
+
+  function showView(name){
+    document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
+    window.scrollTo(0, 0);
   }
 
   function updateClock(){
@@ -365,6 +297,11 @@
     const el = document.getElementById(id);
     el.className = 'msg show ' + type;
     el.textContent = text;
+  }
+  function hideMsg(id){ document.getElementById(id).classList.remove('show'); }
+
+  function esc(t){
+    return String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
   function getLocation(){
@@ -390,42 +327,6 @@
     return res.json();
   }
 
-  let MEMBERS = [];
-
-  async function loadMembers(){
-    const status = document.getElementById('list-status');
-    const sels = [document.getElementById('ci-nama'), document.getElementById('co-nama')];
-    if(API_URL.includes('GANTI_DENGAN_URL')){
-      status.textContent = 'API_URL belum diisi.';
-      status.className = 'list-status err';
-      return;
-    }
-    try{
-      const res = await fetch(API_URL + '?action=list');
-      const data = await res.json();
-      if(data.status !== 'ok') throw new Error(data.message || 'Gagal memuat daftar nama.');
-      MEMBERS = data.members || [];
-      sels.forEach(sel => {
-        sel.innerHTML = '';
-        const ph = document.createElement('option');
-        ph.value = ''; ph.disabled = true; ph.selected = true;
-        ph.textContent = MEMBERS.length ? 'Pilih nama kamu' : 'Belum ada data anak magang';
-        sel.appendChild(ph);
-        MEMBERS.forEach(m => {
-          const o = document.createElement('option');
-          o.value = m.nim;
-          o.textContent = m.nama;
-          sel.appendChild(o);
-        });
-      });
-      status.textContent = '';
-    } catch(err){
-      sels.forEach(sel => { sel.innerHTML = '<option value="" disabled selected>Gagal memuat daftar</option>'; });
-      status.textContent = 'Gagal memuat daftar nama. Coba refresh halaman.';
-      status.className = 'list-status err';
-    }
-  }
-
   function getDeviceId(){
     let id = null;
     try { id = localStorage.getItem('absenDeviceId'); } catch(e){}
@@ -438,88 +339,183 @@
     return id;
   }
 
-  function updatePwUI(m){
-    const wrap = document.getElementById('ci-pw-wrap');
-    const wrap2 = document.getElementById('ci-pw2-wrap');
-    const hint = document.getElementById('ci-pw-hint');
-    const label = document.getElementById('ci-pw-label');
-    const pw = document.getElementById('ci-pw');
+  function creds(){
+    return { nim: session.nim, password: session.password, deviceId: getDeviceId() };
+  }
+
+  /* ---------- HALAMAN 1: LOGIN ---------- */
+
+  async function loadMembers(){
+    const status = document.getElementById('list-status');
+    const sel = document.getElementById('lg-nama');
+    try{
+      const res = await fetch(API_URL + '?action=list');
+      const data = await res.json();
+      if(data.status !== 'ok') throw new Error(data.message || 'Gagal memuat daftar nama.');
+      MEMBERS = data.members || [];
+      sel.innerHTML = '';
+      const ph = document.createElement('option');
+      ph.value = ''; ph.disabled = true; ph.selected = true;
+      ph.textContent = MEMBERS.length ? 'Pilih nama kamu' : 'Belum ada data anak magang';
+      sel.appendChild(ph);
+      MEMBERS.forEach(m => {
+        const o = document.createElement('option');
+        o.value = m.nim;
+        o.textContent = m.nama;
+        sel.appendChild(o);
+      });
+      status.textContent = '';
+      status.className = 'list-status';
+    } catch(err){
+      sel.innerHTML = '<option value="" disabled selected>Gagal memuat daftar</option>';
+      status.textContent = 'Gagal memuat daftar nama. Coba refresh halaman.';
+      status.className = 'list-status err';
+    }
+  }
+
+  function selectedMember(){
+    const nim = document.getElementById('lg-nama').value;
+    return MEMBERS.find(x => x.nim === nim) || null;
+  }
+
+  // Tampilan kolom sandi menyesuaikan: sudah punya sandi -> 1 kolom, belum -> buat sandi (2 kolom)
+  function onNamaChange(){
+    const m = selectedMember();
+    const wrap = document.getElementById('lg-pw-wrap');
+    const wrap2 = document.getElementById('lg-pw2-wrap');
+    const hint = document.getElementById('lg-pw-hint');
+    const label = document.getElementById('lg-pw-label');
+    const pw = document.getElementById('lg-pw');
+    const btn = document.getElementById('lg-btn');
     pw.value = '';
-    document.getElementById('ci-pw2').value = '';
+    document.getElementById('lg-pw2').value = '';
+    hideMsg('lg-msg');
     if(!m){
       wrap.style.display = 'none'; wrap2.style.display = 'none'; hint.style.display = 'none';
+      btn.textContent = 'Masuk';
       return;
     }
     wrap.style.display = 'block';
     if(m.hasPassword){
-      label.textContent = 'Sandi';
-      pw.placeholder = 'Masukkan sandi kamu';
+      label.textContent = 'Kata sandi';
+      pw.placeholder = 'Masukkan kata sandi kamu';
       pw.setAttribute('autocomplete', 'current-password');
       wrap2.style.display = 'none';
       hint.style.display = 'none';
+      btn.textContent = 'Masuk';
     } else {
-      label.textContent = 'Buat sandi baru';
+      label.textContent = 'Buat kata sandi baru';
       pw.placeholder = 'Minimal 6 karakter';
       pw.setAttribute('autocomplete', 'new-password');
       wrap2.style.display = 'block';
       hint.style.display = 'block';
+      btn.textContent = 'Buat sandi & masuk';
     }
   }
 
-  function showInfo(prefix){
-    const nim = document.getElementById(prefix + '-nama').value;
-    const box = document.getElementById(prefix + '-info');
-    const m = MEMBERS.find(x => x.nim === nim);
-    if(!m){
-      box.classList.remove('show');
-      if(prefix === 'ci') updatePwUI(null);
-      return;
+  async function doLogin(){
+    const m = selectedMember();
+    const pw = document.getElementById('lg-pw').value;
+    const pw2 = document.getElementById('lg-pw2').value;
+    const btn = document.getElementById('lg-btn');
+    hideMsg('lg-msg');
+
+    if(!m){ showMsg('lg-msg', 'error', 'Pilih nama kamu terlebih dahulu.'); return; }
+    if(!pw){ showMsg('lg-msg', 'error', 'Isi kata sandi terlebih dahulu.'); return; }
+    const baru = !m.hasPassword;
+    if(baru){
+      if(pw.length < 6){ showMsg('lg-msg', 'error', 'Kata sandi minimal 6 karakter.'); return; }
+      if(pw !== pw2){ showMsg('lg-msg', 'error', 'Kata sandi dan ulangi kata sandi tidak sama.'); return; }
     }
-    box.innerHTML =
-      '<span class="k">NIM / NIS</span>' + m.nim + '<br>' +
-      '<span class="k">Asal</span>' + m.asal + '<br>' +
-      '<span class="k">Divisi</span>' + m.divisi;
-    box.classList.add('show');
-    if(prefix === 'ci') updatePwUI(m);
+
+    const label = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Memeriksa…';
+    try{
+      const result = await postData({ action:'login', nim: m.nim, password: pw, deviceId: getDeviceId() });
+      if(result.status !== 'success'){
+        showMsg('lg-msg', 'error', result.message);
+        return;
+      }
+      session.nim = m.nim;
+      session.password = pw;
+      session.member = result.member;
+      session.today = result.today || { checkin:'', checkout:'' };
+      m.hasPassword = true;
+      document.getElementById('lg-pw').value = '';
+      document.getElementById('lg-pw2').value = '';
+      renderMenu();
+      showView('menu');
+    } catch(err){
+      showMsg('lg-msg', 'error', 'Gagal terhubung: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = label;
+    }
   }
 
-  loadMembers();
+  function doLogout(){
+    session.nim = ''; session.password = ''; session.member = null;
+    session.today = { checkin:'', checkout:'' };
+    document.getElementById('lg-nama').value = '';
+    onNamaChange();
+    showView('login');
+  }
+
+  /* ---------- HALAMAN 2: MENU ---------- */
+
+  function renderMenu(){
+    const m = session.member;
+    const t = session.today;
+    document.getElementById('mn-hello').textContent = 'Halo, ' + m.nama + '!';
+    document.getElementById('mn-info').innerHTML =
+      '<span class="k">NIM / NIS</span>' + esc(m.nim) + '<br>' +
+      '<span class="k">Asal</span>' + esc(m.asal) + '<br>' +
+      '<span class="k">Divisi</span>' + esc(m.divisi);
+
+    const inBtn = document.getElementById('mn-in');
+    const outBtn = document.getElementById('mn-out');
+
+    if(t.checkin){
+      inBtn.disabled = true;
+      document.getElementById('mn-in-sub').textContent = 'Sudah tercatat pukul ' + t.checkin;
+    } else {
+      inBtn.disabled = false;
+      document.getElementById('mn-in-sub').textContent = 'Catat kedatangan kamu hari ini';
+    }
+
+    if(t.checkout){
+      outBtn.disabled = true;
+      document.getElementById('mn-out-sub').textContent = 'Sudah tercatat pukul ' + t.checkout;
+    } else if(!t.checkin){
+      outBtn.disabled = true;
+      document.getElementById('mn-out-sub').textContent = 'Check in dulu sebelum check out';
+    } else {
+      outBtn.disabled = false;
+      document.getElementById('mn-out-sub').textContent = 'Catat kepulangan & kegiatan hari ini';
+    }
+  }
+
+  function backToMenu(){
+    renderMenu();
+    showView('menu');
+  }
+
+  /* ---------- HALAMAN 3A: CHECK IN ---------- */
+
+  function openCheckin(){
+    hideMsg('ci-msg');
+    document.getElementById('ci-radar-dot').className = 'radar-dot';
+    document.getElementById('ci-radar-text').textContent = 'Lokasi akan diperiksa saat kamu menekan tombol di bawah.';
+    document.getElementById('ci-btn').disabled = false;
+    showView('checkin');
+  }
 
   async function doCheckin(){
-    const nim = document.getElementById('ci-nama').value;
-    const pw = document.getElementById('ci-pw').value;
-    const pw2 = document.getElementById('ci-pw2').value;
-    const m = MEMBERS.find(x => x.nim === nim);
     const btn = document.getElementById('ci-btn');
     const dot = document.getElementById('ci-radar-dot');
     const radarText = document.getElementById('ci-radar-text');
-
-    document.getElementById('ci-msg').classList.remove('show');
-
-    if(!nim){
-      showMsg('ci-msg', 'error', 'Pilih nama kamu terlebih dahulu.');
-      return;
-    }
-    if(!pw){
-      showMsg('ci-msg', 'error', 'Isi sandi terlebih dahulu.');
-      return;
-    }
-    const baru = m && !m.hasPassword;
-    if(baru){
-      if(pw.length < 6){
-        showMsg('ci-msg', 'error', 'Sandi minimal 6 karakter.');
-        return;
-      }
-      if(pw !== pw2){
-        showMsg('ci-msg', 'error', 'Sandi dan ulangi sandi tidak sama.');
-        return;
-      }
-    }
-
-    if(API_URL.includes('GANTI_DENGAN_URL')){
-      showMsg('ci-msg', 'error', 'API_URL belum diisi. Tempel URL Web App Apps Script di index.html.');
-      return;
-    }
+    hideMsg('ci-msg');
 
     btn.disabled = true;
     dot.className = 'radar-dot seeking';
@@ -530,65 +526,69 @@
       dot.className = 'radar-dot ok';
       radarText.textContent = 'Lokasi ditemukan, mengirim data absen…';
 
-      const result = await postData({
-        action:'checkin',
-        nim,
-        password: pw,
-        deviceId: getDeviceId(),
-        lat: coords.latitude, lng: coords.longitude
-      });
+      const result = await postData(Object.assign({ action:'checkin', lat: coords.latitude, lng: coords.longitude }, creds()));
 
       if(result.status === 'success'){
+        session.today.checkin = result.jam || '✓';
         radarText.textContent = 'Status lokasi: ' + result.statusLokasi;
         showMsg('ci-msg', 'success', result.message);
-        if(baru){ m.hasPassword = true; }
-        updatePwUI(m);
+        // tombol dibiarkan nonaktif: check-in sudah tercatat hari ini
       } else {
         dot.className = 'radar-dot fail';
         radarText.textContent = 'Check-in belum tercatat.';
         showMsg('ci-msg', 'error', result.message);
+        btn.disabled = false;
       }
     } catch(err){
       dot.className = 'radar-dot fail';
       radarText.textContent = err.message;
       showMsg('ci-msg', 'error', err.message);
-    } finally {
       btn.disabled = false;
     }
   }
 
+  /* ---------- HALAMAN 3B: CHECK OUT ---------- */
+
+  function openCheckout(){
+    hideMsg('co-msg');
+    document.getElementById('co-btn').disabled = false;
+    showView('checkout');
+  }
+
   async function doCheckout(){
-    const nim = document.getElementById('co-nama').value;
-    const pw = document.getElementById('co-pw').value;
     const kegiatan = document.getElementById('co-kegiatan').value.trim();
     const btn = document.getElementById('co-btn');
+    hideMsg('co-msg');
 
-    document.getElementById('co-msg').classList.remove('show');
-
-    if(!nim || !pw || !kegiatan){
-      showMsg('co-msg', 'error', 'Pilih nama, isi sandi, dan isi kegiatan yang sudah dilakukan.');
-      return;
-    }
-
-    if(API_URL.includes('https://script.google.com/macros/s/AKfycbyunktz11IxP58_IH5WmAnX96jtTWqmzhv1_60eh8gtWKTMaoFQizmUZtgpPYLJKZdQ/exec')){
-      showMsg('co-msg', 'error', 'https://script.google.com/macros/s/AKfycbyunktz11IxP58_IH5WmAnX96jtTWqmzhv1_60eh8gtWKTMaoFQizmUZtgpPYLJKZdQ/exec.');
+    if(!kegiatan){
+      showMsg('co-msg', 'error', 'Isi kegiatan yang sudah dilakukan hari ini.');
       return;
     }
 
     btn.disabled = true;
     try{
-      const result = await postData({ action:'checkout', nim, password: pw, deviceId: getDeviceId(), kegiatan });
-      showMsg('co-msg', result.status === 'success' ? 'success' : 'error', result.message);
+      const result = await postData(Object.assign({ action:'checkout', kegiatan }, creds()));
       if(result.status === 'success'){
-        document.getElementById('co-pw').value = '';
+        session.today.checkout = result.jam || '✓';
         document.getElementById('co-kegiatan').value = '';
+        showMsg('co-msg', 'success', result.message);
+        // tombol dibiarkan nonaktif: check-out sudah tercatat hari ini
+      } else {
+        showMsg('co-msg', 'error', result.message);
+        btn.disabled = false;
       }
     } catch(err){
       showMsg('co-msg', 'error', 'Gagal mengirim data: ' + err.message);
-    } finally {
       btn.disabled = false;
     }
   }
+
+  // Tekan Enter di kolom sandi = Masuk
+  ['lg-pw','lg-pw2'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+  });
+
+  loadMembers();
 </script>
 </body>
 </html>
